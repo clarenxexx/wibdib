@@ -1,0 +1,136 @@
+
+<div id="approved-events">
+    <?php include('approved_events.php'); ?>
+</div>
+
+
+<div id="pending-events">
+    <?php
+
+    session_start();
+
+    $posts = array();
+
+    function addPost($newPost) {
+        global $posts;
+        $timestamp = time();
+        $posts[$timestamp] = $newPost;
+    }
+
+    
+
+    if ($_SESSION['role'] === 'student') {
+    
+
+        $studentUsername = $_SESSION['username']; 
+        $conn = mysqli_connect("localhost", "johnreiaris", "12345", "events");
+        if (!$conn) {
+            die("Connection failed: " . mysqli_connect_error());
+        }
+
+        $pendingEventsSql = "SELECT * FROM events WHERE status = 'pending' AND user_id = (SELECT id FROM users WHERE username = '$studentUsername')";
+        $pendingEventsResult = mysqli_query($conn, $pendingEventsSql);
+
+        if (mysqli_num_rows($pendingEventsResult) > 0) {
+            echo '<h2>Pending Events</h2>';
+
+            while ($event = mysqli_fetch_assoc($pendingEventsResult)) {
+                
+
+                $imagePath = $event['picture'];
+
+
+                echo '
+                <table>
+                <tr>
+                <th colspan="2" style="text-align: center; font-size: 24px;">Title</th>
+                </tr>
+                <tr>
+                <td colspan="2" style="text-align: center; font-size: 18x;">' . $event['title'] . '</td>
+                </tr>
+                </table>';
+                
+                echo '
+                <table>
+                <tr>
+                <th colspan="2" style="text-align: center; font-size: 24px;">Description</th>
+                </tr>
+                <tr>
+                <td colspan="2" style="text-align: center; font-size: 18x;">' . $event['description'] . '</td>
+                </tr>
+                </table>';
+
+                echo '
+                <table>
+                <tr>
+                <th colspan="2" style="text-align: center; font-size: 24px;">Date Posted</th>
+                </tr>
+                <tr>
+                <td colspan="2" style="text-align: center; font-size: 18x;">' . $event['upload_time'] . '</td>
+                </tr>
+                </table>';
+
+
+                if (!empty($imagePath)) {
+
+                    echo '<table>';
+                    echo '
+                    <tr>
+                    <th colspan="2" style="text-align: center; font-size: 24px;">Full View</th>
+                    </tr>
+                    <tr>
+                    </tr>
+                    ';
+                    echo '</table>';
+
+                    echo "<br>";
+
+                    echo '<img src="' . $imagePath . '" alt="' . $event['title'] . '">';
+                }
+                echo '';
+                echo '';
+
+            }
+            echo '</table>';
+        } else {
+            echo 'No pending events found for ' . $studentUsername;
+        }
+        mysqli_close($conn);
+    } else {
+        echo 'You do not have permission to view pending events.';
+    }
+    ?>
+</div>
+
+
+<script>
+const uploadEventButton = document.getElementById("upload-event-button");
+const pendingEventsButton = document.getElementById("pending-events-button");
+const eventUploadForm = document.getElementById("event-upload-form");
+const pendingEventsContainer = document.getElementById("pending-events");
+const approvedEventsContainer = document.getElementById("approved-events");
+
+
+eventUploadForm.style.display = "none";
+pendingEventsContainer.style.display = "none";
+approvedEventsContainer.style.display = "block";
+
+uploadEventButton.addEventListener("click", () => {
+    eventUploadForm.style.display = "block";
+    pendingEventsContainer.style.display = "none";
+    approvedEventsContainer.style.display = "none";
+});
+
+pendingEventsButton.addEventListener("click", () => {
+    eventUploadForm.style.display = "none";
+    pendingEventsContainer.style.display = "block";
+    approvedEventsContainer.style.display = "none";
+});
+
+
+</script>
+
+                
+                </div>
+            </div>
+        </div>

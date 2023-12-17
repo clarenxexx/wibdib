@@ -1,0 +1,28 @@
+CREATE TABLE `events` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `title` varchar(255) NOT NULL,
+ `description` text DEFAULT NULL,
+ `picture` varchar(255) DEFAULT NULL,
+ `status` enum('pending','approved','declined') DEFAULT 'pending',
+ `user_id` int(11) DEFAULT NULL,
+ `admin_approval` tinyint(1) DEFAULT 0,
+ `dean_approval` tinyint(1) DEFAULT 0,
+ `upress_approval` tinyint(1) DEFAULT 0,
+ `staff_approval` tinyint(1) DEFAULT 0,
+ `upload_time` datetime NOT NULL,
+ PRIMARY KEY (`id`),
+ KEY `user_id` (`user_id`),
+ CONSTRAINT `events_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+
+CREATE TABLE `users` (
+ `id` int(11) NOT NULL AUTO_INCREMENT,
+ `username` varchar(255) NOT NULL,
+ `password` varchar(255) NOT NULL,
+ `role` varchar(20) DEFAULT NULL,
+ PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci
+
+ Add new user (under user accounts) Username: johnreiaris, localhost, password: 12345 check all privileges.
+
+ 2W6r[1RtgU1wr)Bn

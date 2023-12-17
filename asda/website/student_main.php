@@ -1,0 +1,261 @@
+<?php
+// Move session_start() to the top
+session_start();
+
+// Rest of your code...
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        /* Style for the body and buttons */
+        body {
+            background-color: #2ecc71;
+            font-family: Arial, sans-serif;
+            position: relative;
+        }
+
+        .action-button {
+            position: absolute;
+            top: 20px;
+            cursor: pointer;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 3px;
+        }
+
+        #upload-event-button {
+            right: 40px;
+            background-color: #187529;
+            color: #fff;
+        }
+
+        #pending-events-button {
+            right: 180px; /* Adjust the position as needed */
+            background-color: #187529; /* Orange button color */
+            color: #fff;
+        }
+
+        #open-calendar {
+            right: 320px;
+            background-color: #187529;
+            color: #fff;
+        }
+
+        #event-upload-form {
+            display: none;
+        }
+        #pending-events {
+        display: none;
+        padding: 20px;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #pending-events h2 {
+        font-size: 24px;
+        color: #ff6600;
+        margin-bottom: 10px;
+        }
+
+        #pending-events table {
+        width: 100%;
+        border-collapse: collapse;
+        }
+
+        #pending-events table th, #pending-events table td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: left;
+        }
+
+        #pending-events table th {
+        background-color: #f2f2f2;
+        }
+
+        #pending-events table img {
+        max-width: 100px;
+        height: auto;
+        }         
+
+        #logout-button {
+            right: 460px; /* Adjust the position as needed */
+            background-color: #187529; /* Orange button color */
+            color: #fff;
+        }
+
+        .scrollable-container {
+    height: 300px;
+    overflow: auto;
+}
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Main Page</h1>
+  
+    <button id="upload-event-button" class="action-button">Upload an event</button>
+
+    <button id="pending-events-button" class="action-button">Pending Events</button>
+
+    <a href = "/website/calendarview.php"> <button id="open-calendar" class="action-button">Pyorg Calendar</button> </a>
+
+    
+    <div id="event-upload-form" style="display: none; background-color: #fff; padding: 20px; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+    <form action="upload_event_process.php" method="POST" enctype="multipart/form-data">
+        <h2 style="font-size: 24px; color: #187529;">Upload an Event</h2>
+
+        <label for="title">Event Title</label>
+        <input type="text" name="title" id="title" required style="width: 100%; padding: 10px; margin-bottom: 10px;">
+
+        <label for="description">Event Description</label>
+        <textarea name="description" id="description" required style="width: 100%; padding: 10px; margin-bottom: 10px;"></textarea>
+
+        <label for="picture">Event Picture</label> <br> <br>
+        <input type="file" name="picture" id="picture" accept="image/*" required style="margin-bottom: 10px;"> <br> <br>
+
+        <button type="submit" name = "submit" style="background-color: #187529; color: #fff; padding: 10px 20px; border: none; border-radius: 3px; cursor: pointer;">Upload Event</button>
+
+    </form>
+</div>
+
+ 
+    <div id="approved-events">
+        <?php include('approved_events.php'); ?>
+    </div>
+
+   
+    <div id="pending-events">
+        <?php   
+
+
+
+        $posts = array();
+
+        function addPost($newPost) {
+            global $posts;
+            $timestamp = time();
+            $posts[$timestamp] = $newPost;
+        }
+
+        
+
+        if ($_SESSION['role'] === 'admin') {
+           
+
+            $studentUsername = $_SESSION['username']; 
+            $conn = mysqli_connect("localhost", "johnreiaris", "12345", "events");
+            if (!$conn) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+
+            $pendingEventsSql = "SELECT * FROM events WHERE status = 'pending' AND user_id = (SELECT id FROM users WHERE username = '$studentUsername')";
+            $pendingEventsResult = mysqli_query($conn, $pendingEventsSql);
+
+            if (mysqli_num_rows($pendingEventsResult) > 0) {
+                echo '<h2>Pending Events</h2>';
+
+                while ($event = mysqli_fetch_assoc($pendingEventsResult)) {
+                    
+
+                    $imagePath = $event['picture'];
+
+
+                    echo '
+                    <table>
+                    <tr>
+                    <th colspan="2" style="text-align: center; font-size: 24px;">Title</th>
+                    </tr>
+                    <tr>
+                    <td colspan="2" style="text-align: center; font-size: 18x;">' . $event['title'] . '</td>
+                    </tr>
+                    </table>';
+                    
+                    echo '
+                    <table>
+                    <tr>
+                    <th colspan="2" style="text-align: center; font-size: 24px;">Description</th>
+                    </tr>
+                    <tr>
+                    <td colspan="2" style="text-align: center; font-size: 18x;">' . $event['description'] . '</td>
+                    </tr>
+                    </table>';
+
+                    echo '
+                    <table>
+                    <tr>
+                    <th colspan="2" style="text-align: center; font-size: 24px;">Date Posted</th>
+                    </tr>
+                    <tr>
+                    <td colspan="2" style="text-align: center; font-size: 18x;">' . $event['upload_time'] . '</td>
+                    </tr>
+                    </table>';
+
+    
+                    if (!empty($imagePath)) {
+
+                        echo '<table>';
+                        echo '
+                        <tr>
+                        <th colspan="2" style="text-align: center; font-size: 24px;">Full View</th>
+                        </tr>
+                        <tr>
+                        </tr>
+                        ';
+                        echo '</table>';
+
+                        echo "<br>";
+
+                        echo '<img src="' . $imagePath . '" alt="' . $event['title'] . '">';
+                    }
+                    echo '';
+                    echo '';
+
+                }
+                echo '</table>';
+            } else {
+                echo 'No pending events found for ' . $studentUsername;
+            }
+            mysqli_close($conn);
+        } else {
+            echo 'You do not have permission to view pending events.';
+        }
+        ?>
+    </div>
+
+    
+<script>
+    const uploadEventButton = document.getElementById("upload-event-button");
+    const pendingEventsButton = document.getElementById("pending-events-button");
+    const eventUploadForm = document.getElementById("event-upload-form");
+    const pendingEventsContainer = document.getElementById("pending-events");
+    const approvedEventsContainer = document.getElementById("approved-events");
+
+   
+    eventUploadForm.style.display = "none";
+    pendingEventsContainer.style.display = "none";
+    approvedEventsContainer.style.display = "block";
+
+    uploadEventButton.addEventListener("click", () => {
+        eventUploadForm.style.display = "block";
+        pendingEventsContainer.style.display = "none";
+        approvedEventsContainer.style.display = "none";
+    });
+
+    pendingEventsButton.addEventListener("click", () => {
+        eventUploadForm.style.display = "none";
+        pendingEventsContainer.style.display = "block";
+        approvedEventsContainer.style.display = "none";
+    });
+
+    
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta chareset="UTS-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/register.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
+        <title>Newsfeed</title>
+    </head>
+    <body>
+
+        <div class="main-event">
+            <input type="checkbox" id="chk" aria-hidden="true">
+            <div class="signup">
+                <form>
+                    <label for="chk" aria-hidden="true">Register</label>
+                    <input type="text" name="txt" placeholder="Username" required="">
+                    <input type="emai" name="email" placeholder="Email" required="">
+                    <input type="password" name="pswd" placeholder="Password" required="">
+                    <button>Sign Up</button>
+                </form>
+
+            </div>
+
+            <div class="login">
+                <form>
+                    <label for="chk" aria-hidden="true">Login</label>
+                    <input type="email" name="emai" placeholder="Email" required="">
+                    <input type="password" name="pswd" placeholder="Password" required="">
+                    <button>Login</button>
+                </form>
+            </div>
+        </div>
+    </body>
+</html>
