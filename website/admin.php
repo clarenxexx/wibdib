@@ -268,6 +268,40 @@ body{
     height: 300px;
     overflow: auto;
 }
+        
+        
+#upload-event-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #187529; 
+            color: #fff; 
+            border: none;
+            padding: 10px 20px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        #upload-event-button:hover {
+            background-color: #149224; 
+        }
+
+        
+        #event-upload-form {
+            background-color: #fff; 
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            display: none;
+        }
+
+        #approved-events {
+            background-color: #fff; 
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 20px;
+        }
 
 
 
@@ -300,7 +334,10 @@ body{
                         <a href="/website/calendarview.php">PyOrg Calendar</a>
                     </li>
                     <li>
-                    <a href = "/website/login.php"> <button id="signout-button" class="action-button">Sign Out</button></a>
+                        <a class="action-button" href="manage_events.php">Manage Events</a>
+                    </li>
+                    <li>
+                        <a href = "/website/login.php"> <button id="signout-button" class="action-button">Sign Out</button></a>
                     </li>
                 </ul>
             </nav>
@@ -430,7 +467,6 @@ const pendingEventsContainer = document.getElementById("pending-events");
 const approvedEventsContainer = document.getElementById("approved-events");
 const bbbb =document.getElementById("bruh");
 
-
 eventUploadForm.style.display = "none";
 pendingEventsContainer.style.display = "none";
 approvedEventsContainer.style.display = "block";
@@ -441,7 +477,6 @@ uploadEventButton.addEventListener("click", () => {
     pendingEventsContainer.style.display = "none";
     approvedEventsContainer.style.display = "none";
     bbbb.style.display="block";
-
 
 });
 

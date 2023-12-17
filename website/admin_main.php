@@ -3,7 +3,7 @@
 <head>
     <style>
         body {
-            background-color: #2ecc71; 
+            background-color: white; 
             font-family: Arial, sans-serif;
             position: relative; 
         }

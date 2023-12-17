@@ -22,10 +22,9 @@
             <label for="role">Select Role</label>
             <select name="role" id="role">
                 <option value="student">Student</option>
-                <option value="admin">Admin</option>
+                <option value="admin">President</option>
                 <option value="dean">Dean</option>
-                <option value="staff">Staff</option>
-                <option value="upress">Upress</option>
+                <option value="staff">VPAA</option>
             </select>
             <div id="secret-code-field" style="display: none;">
                 <label for="secret_code" style="font-size: 0.9rem;">Secret Code (for admin only)</label>

@@ -23,7 +23,7 @@
 
 
 body {
-    background-color: green;
+    background-color: white;
 }
 
 table {
@@ -40,7 +40,7 @@ td, th {
     
 }
 
-#go-back-button {
+#goback{
   position: fixed;
   bottom: 0;
   left: 0;
@@ -56,7 +56,30 @@ td, th {
 
 </head>
 <body>
-<a href = "/website/homepage.php"> <button id="go-back-button" class="action-button">Return to Main Page</button> </a>
+    <div id="main">
+        <form action="calendarprocess.php" id="loginform">
+            <button id="goback" name="user_role" id="user_role" value="<?php echo isset($_SESSION['role']) ? $_SESSION['role'] : ''; ?>">Return</button>
+        </form>
+    </div>
+
+    <script>
+// JavaScript to dynamically redirect based on user role
+    document.getElementById('loginform').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the form from submitting
+    var userRole = document.getElementById('user_role').value;
+    
+    if (userRole === 'student') {
+        window.location.href = 'student_main.php';
+    } else if (userRole === 'admin') {
+        window.location.href = 'admin.php';
+    } else if(userRole ==='dean'){
+        window.location.href = 'homepage.php'
+    } else {
+        // Handle other roles or unknown roles
+        alert('Unknown user role');
+    }
+});
+</script>
 </body>
 </html>
 

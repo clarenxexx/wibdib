@@ -15,18 +15,23 @@ session_start();
     </head>
     
     <body>
-    <div class="container">
-        <div class="main-event">
+<div class="container">
+    <div class="main-event">
         <div class="login">
-        <form action="homepage.php" method="POST">
-            <label for="username">Username</label>
-            <input type="text" name="username" id="username" placeholder="Username" required>
-            <input type="password" name="password" id="password" placeholder="Password" required>
+            <form action="login_process.php" method="POST">
+                <label for="username">Username</label>
+                <input type="text" name="username" id="username" placeholder="Username" required>
+                <input type="password" name="password" id="password" placeholder="Password" required>
 
-            <button type="submit">Login</button>
-            <a href="register.php">Don't have an account yet?</a>
-        </form>
+                <button type="submit">Login</button>
+                <a href="register.php">Don't have an account yet?</a>
+
+                <!-- Add a hidden input field for user role -->
+                <input type="hidden" name="user_role" id="user_role" value="<?php echo isset($_SESSION['role']) ? $_SESSION['role'] : ''; ?>">
+            </form>
         </div>
+    </div>
+</div>
 
-</body>
+    </body>
 </html>

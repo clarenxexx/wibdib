@@ -18,7 +18,7 @@ if (!isset($_SESSION['user_id'])) {
     <link rel="stylesheet" href="css/hompagecss.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@500&family=Poppins&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">\
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
     <style>
         @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css");
 
@@ -28,20 +28,23 @@ if (!isset($_SESSION['user_id'])) {
     font-family: 'Noto Sans', sans-serif;
 }
 body{
-    min-height: 100vh;
+    min-height: 100%;
     width: 100%;
+    background-image: linear-gradient(5deg, rgba(2,0,36,1) 0%, rgba(9,121,51,0.44368912337662336) 100%, rgba(0,212,255,1) 100%), url("/img/bg2.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
     background-position: center;
     box-sizing: border-box;
+    overflow-y: auto;
     overflow-x: hidden;
     display: flex;
-    
 }
 #nav{
     background: #EDF1D6;
     position: relative;
     text-align: center;
     z-index: 2;
-    width: 2140px;
+    width: 1370px;
 
 }
 
@@ -49,7 +52,6 @@ body{
     display: inline-flex;
     list-style: none;
     color: #000000;
-    width: 100%;
     margin-left: 150px;
 
 
@@ -126,6 +128,8 @@ body{
 /*main content*/
 .content{
     display: flex;
+    height: 100vh;
+
 }
 .content .wrapper{
     display: flex;
@@ -159,10 +163,10 @@ body{
 }
 .content .main {
     z-index: 2;
-    margin-top: 22px;
     display: flex;
     position: relative;
     background-color: #d5cbb3;
+    margin-left: 295px;
     width: 100%; /* Adjust the width as needed */
     max-width: 1000px; /* Set a maximum width if needed */
     left: -140px;
@@ -171,6 +175,8 @@ body{
     padding: 15px;
     justify-content: center;
     align-items: center;
+    max-height: 100%;
+    overflow-y: auto;
     /* height: 1000px; Remove or adjust the height */
 }
 #file-upload-button{
@@ -205,31 +211,47 @@ body{
         #pending-events {
         display: none;
         padding: 20px;
-        background-color: #fff;
-        border: 1px solid #ccc;
+        text-align: center;
+        justify-content: center;
+        margin-left: 400px;
+        width: 500px;
+        height: 500px;
+        background: transparent;
         border-radius: 5px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+        color: white;
         }
 
         #pending-events h2 {
-        font-size: 24px;
-        color: #ff6600;
+        font-size: 2rem;
+        color: orangered;
         margin-bottom: 10px;
         }
+        /*#pending-events img{
+            width: 90px;
+            height: 90px;
+            margin-top: -10px;
+        }*/
 
         #pending-events table {
         width: 100%;
         border-collapse: collapse;
         }
 
+        #pending-events .tableth {
+        width: 100%;
+        margin-top: 30px;
+        }
+
         #pending-events table th, #pending-events table td {
-        border: 1px solid #ccc;
+        border: 3px solid #ccc;
         padding: 10px;
         text-align: left;
         }
 
         #pending-events table th {
-        background-color: #f2f2f2;
+        background:transparent;
         }
 
         #pending-events table img {
@@ -247,8 +269,6 @@ body{
     height: 300px;
     overflow: auto;
 }
-
-
 
 
 
@@ -299,105 +319,6 @@ body{
             <div id="bruh" class="content">
                 
                 <div class="main">
-                    <div id="pending-events">
-                        <?php   
-
-
-
-                                $posts = array();
-
-                                function addPost($newPost) {
-                                global $posts;
-                                $timestamp = time();
-                                $posts[$timestamp] = $newPost;
-                                }
-
-        
-
-                                if ($_SESSION['role'] === 'admin') {
-            
-
-                                $studentUsername = $_SESSION['username']; 
-                                $conn = mysqli_connect("localhost", "johnreiaris", "12345", "events");
-                                if (!$conn) {
-                                    die("Connection failed: " . mysqli_connect_error());
-                                }
-
-                                $pendingEventsSql = "SELECT * FROM events WHERE status = 'pending' AND user_id = (SELECT id FROM users WHERE username = '$studentUsername')";
-                                $pendingEventsResult = mysqli_query($conn, $pendingEventsSql);
-
-                                if (mysqli_num_rows($pendingEventsResult) > 0) {
-                                    echo '<h2>Pending Events</h2>';
-
-                                while ($event = mysqli_fetch_assoc($pendingEventsResult)) {
-                    
-
-                                    $imagePath = $event['picture'];
-
-
-                                    echo '
-                                    <table>
-                                    <tr>
-                                    <th colspan="2" style="text-align: center; font-size: 24px;">Title</th>
-                                    </tr>
-                                    <tr>
-                                    <td colspan="2" style="text-align: center; font-size: 18x;">' . $event['title'] . '</td>
-                                    </tr>
-                                    </table>';
-                    
-                                    echo '
-                                    <table>
-                                    <tr>
-                                    <th colspan="2" style="text-align: center; font-size: 24px;">Description</th>
-                                    </tr>
-                                    <tr>
-                                    <td colspan="2" style="text-align: center; font-size: 18x;">' . $event['description'] . '</td>
-                                    </tr>
-                                    </table>';
-
-                                    echo '
-                                    <table>
-                                    <tr>
-                                    <th colspan="2" style="text-align: center; font-size: 24px;">Date Posted</th>
-                                    </tr>
-                                    <tr>
-                                    <td colspan="2" style="text-align: center; font-size: 18x;">' . $event['upload_time'] . '</td>
-                                    </tr>
-                                    </table>';
-
-    
-                                    if (!empty($imagePath)) {
-
-                                        echo '<table>';
-                                        echo '
-                                        <tr>
-                                        <th colspan="2" style="text-align: center; font-size: 24px;">Full View</th>
-                                        </tr>
-                                        <tr>
-                                        </tr>
-                                        ';
-                                        echo '</table>';
-
-                                        echo "<br>";
-
-                                        echo '<img src="' . $imagePath . '" alt="' . $event['title'] . '">';
-                                    }
-                                    echo '';
-                                    echo '';
-
-                                }
-                                echo '</table>';
-                                } else {
-                                echo 'No pending events found for ' . $studentUsername;
-                                }
-                                mysqli_close($conn);
-                                } else {
-                                echo 'You do not have permission to view pending events.';
-                                }
-                        ?>
-                    </div>
-
-    
                     <div id="event-upload-form" style="z-index:1; justify-content: center; align-items: center; display: none; max-height: 350px; min-height: 300px; background-color: #EDF1D6; margin: 20px; padding: 20px; border: 1px solid #ccc; border-radius: 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
                         <form action="homepage.php" method="POST" enctype="multipart/form-data">
                             <label for="name" name="main" style="font-size: 2rem; text-align: center; display:flex; justify-content:center;">Upload Event</label>
@@ -416,6 +337,89 @@ body{
                     </div>
                 </div>
             </div>
+
+   
+            <div id="pending-events">
+        <?php   
+
+
+
+        $posts = array();
+
+        function addPost($newPost) {
+            global $posts;
+            $timestamp = time();
+            $posts[$timestamp] = $newPost;
+        }
+
+        
+
+        if ($_SESSION['role'] === 'admin') {
+        
+
+            $studentUsername = $_SESSION['username']; 
+            $conn = mysqli_connect("localhost", "johnreiaris", "12345", "events");
+            if (!$conn) {
+                die("Connection failed: " . mysqli_connect_error());
+            }
+
+            $pendingEventsSql = "SELECT * FROM events WHERE status = 'pending' AND user_id = (SELECT id FROM users WHERE username = '$studentUsername')";
+            $pendingEventsResult = mysqli_query($conn, $pendingEventsSql);
+
+            if (mysqli_num_rows($pendingEventsResult) > 0) {
+                echo '<h2>Pending Events</h2>';
+
+                while ($event = mysqli_fetch_assoc($pendingEventsResult)) {
+                    
+
+                    $imagePath = $event['picture'];
+
+
+                    echo '
+                    <table class="tableth">
+                    <tr>
+                    <th colspan="2" style="text-align: center; font-size: 24px;">Title</th>
+                    </tr>
+                    <tr>
+                    <td colspan="2" style="text-align: center; font-size: 18x;">' . $event['title'] . '</td>
+                    </tr>
+                    </table>';
+                    
+                    echo '
+                    <table>
+                    <tr>
+                    <th colspan="2" style="text-align: center; font-size: 24px;">Description</th>
+                    </tr>
+                    <tr>
+                    <td colspan="2" style="text-align: center; font-size: 18x;">' . $event['description'] . '</td>
+                    </tr>
+                    </table>';
+
+                    echo '
+                    <table>
+                    <tr>
+                    <th colspan="2" style="text-align: center; font-size: 24px;">Date Posted</th>
+                    </tr>
+                    <tr>
+                    <td colspan="2" style="text-align: center; font-size: 18x;">' . $event['upload_time'] . '</td>
+                    </tr>
+                    </table>';
+
+    
+                    echo '';
+                    echo '';
+
+                }
+                echo '</table>';
+            } else {
+                echo 'No pending events found for ' . $studentUsername;
+            }
+            mysqli_close($conn);
+        } else {
+            echo 'You do not have permission to view pending events.';
+        }
+        ?>
+    </div>
 
 
 

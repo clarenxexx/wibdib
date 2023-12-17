@@ -40,7 +40,7 @@ body{
 }
 
         h1 {
-            width: 400px;
+            width: 100%;
             border-radius: 10px;
             background: #e6d4b0;
             color: black; 
@@ -73,16 +73,18 @@ body{
 
         table, th, td {
             border: 1px solid #ccc;
+            background: #e2cea5;
         }
 
         th, td {
             padding: 10px;
             text-align: left;
+            font-weight: bold;
         }
 
       
         th {
-            background: #e6d4b0;
+            background: #a18d58;
             color: black; 
         }
 
@@ -94,14 +96,14 @@ body{
         
         a {
             text-decoration: none;
-            background: #e6d4b0;
-            color: #fff; 
+            background: #a18d58;
+            color: black; 
             padding: 5px 10px;
             border-radius: 5px;
         }
 
         a:hover {
-            background-color: #a18d58; 
+            background-color: white; 
         }
     </style>
 </head>
